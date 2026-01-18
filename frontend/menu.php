@@ -134,63 +134,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS for interactivity -->
-    <script>
-        // Category filter tabs
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', function () {
-                tabButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
 
-        // Smooth scroll behavior
-        document.documentElement.style.scrollBehavior = 'smooth';
-        
-        // Fetch Meals
-        $(document).ready(function() {
-            $.ajax({
-                url: '../backend/api/get_meals.php',
-                method: 'GET',
-                success: function(response) {
-                    $('#menu-loading').hide();
-                    
-                    if(response.success && response.data) {
-                        const template = $('.menu-item-template');
-                        const container = $('#dynamic-menu-row');
-                        
-                        response.data.forEach(meal => {
-                            const clone = template.clone().removeClass('menu-item-template mb-0');
-                            
-                            // Map existing images randomly if null for demo purposes, or use default
-                            // Since we don't have exact URL mapping in DB yet, we'll try to pick a nice one or default
-                            let imgUrl = meal.image_url ? 'assets/images/' + meal.image_url : 'assets/images/image2.jpg';
-                            
-                            clone.find('.menu-title').text(meal.meal_name);
-                            clone.find('.menu-price').text(parseFloat(meal.price).toLocaleString() + ' FCFA');
-                            clone.find('.menu-image').attr('src', imgUrl).attr('alt', meal.meal_name);
-                            
-                            // Add meal_id data attribute for cart
-                            clone.find('.menu-card').attr('data-id', meal.meal_id);
-                            
-                            container.append(clone);
-                        });
-                        
-                        // Re-sync buttons with cart state (defined in script.js)
-                        if(typeof syncButtons === 'function') {
-                            syncButtons();
-                        }
-                    } else {
-                        $('#dynamic-menu-row').html('<div class="col-12 text-center">Failed to load menu.</div>');
-                    }
-                },
-                error: function() {
-                    $('#menu-loading').hide();
-                    $('#dynamic-menu-row').html('<div class="col-12 text-center">Error connecting to server.</div>');
-                }
-            });
-        });
-    </script>
     <!-- Cart Overlay -->
     <div class="cart-overlay" id="cartOverlay"></div>
 
@@ -261,6 +205,65 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="assets/js/script.js"></script>
+
+    <!-- Custom JS for interactivity -->
+    <script>
+        // Category filter tabs
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Fetch Meals
+        $(document).ready(function() {
+            $.ajax({
+                url: '../backend/api/get_meals.php',
+                method: 'GET',
+                success: function(response) {
+                    $('#menu-loading').hide();
+                    
+                    if(response.success && response.data) {
+                        const template = $('.menu-item-template');
+                        const container = $('#dynamic-menu-row');
+                        
+                        response.data.forEach(meal => {
+                            const clone = template.clone().removeClass('menu-item-template mb-0');
+                            
+                            // Map existing images randomly if null for demo purposes, or use default
+                            // Since we don't have exact URL mapping in DB yet, we'll try to pick a nice one or default
+                            let imgUrl = meal.image_url ? 'assets/images/' + meal.image_url : 'assets/images/image2.jpg';
+                            
+                            clone.find('.menu-title').text(meal.meal_name);
+                            clone.find('.menu-price').text(parseFloat(meal.price).toLocaleString() + ' FCFA');
+                            clone.find('.menu-image').attr('src', imgUrl).attr('alt', meal.meal_name);
+                            
+                            // Add meal_id data attribute for cart
+                            clone.find('.menu-card').attr('data-id', meal.meal_id);
+                            
+                            container.append(clone);
+                        });
+                        
+                        // Re-sync buttons with cart state (defined in script.js)
+                        if(typeof syncButtons === 'function') {
+                            syncButtons();
+                        }
+                    } else {
+                        $('#dynamic-menu-row').html('<div class="col-12 text-center">Failed to load menu.</div>');
+                    }
+                },
+                error: function() {
+                    $('#menu-loading').hide();
+                    $('#dynamic-menu-row').html('<div class="col-12 text-center">Error connecting to server.</div>');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
