@@ -1,0 +1,202 @@
+/* Professional & Clean Auth Styling (Food Bistro Theme) */
+:root {
+    --auth-bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f5efeb 100%);
+    --auth-card-bg: #ffffff;
+    --auth-primary: #F28C28;
+    /* Bistro Orange */
+    --auth-primary-hover: #E07B1F;
+    --auth-text-deep: #1C1A17;
+    /* Deep Charcoal */
+    --auth-text-muted: #8A5A2B;
+    /* Warm Silt */
+    --auth-border: #f0f0f0;
+    --auth-input-focus: rgba(242, 140, 40, 0.1);
+}
+
+.auth-container {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    background: var(--auth-bg-gradient);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background decorative elements */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(242, 140, 40, 0.05) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    border-radius: 50%;
+}
+
+.auth-card {
+    background: var(--auth-card-bg);
+    padding: 48px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(28, 26, 23, 0.06);
+    max-width: 480px;
+    width: 100%;
+    z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.auth-card.signup-wide {
+    max-width: 640px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-icon {
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 24px;
+    color: var(--auth-primary);
+    box-shadow: 0 8px 20px rgba(242, 140, 40, 0.12);
+    border: 1px solid rgba(242, 140, 40, 0.1);
+}
+
+.auth-header h2 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    margin-top: 24px;
+    color: var(--auth-text-deep);
+}
+
+.auth-header p {
+    color: var(--auth-text-muted);
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+/* Form Styling */
+.form-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--auth-text-deep);
+    margin-bottom: 10px;
+    display: block;
+    font-family: 'Inter', sans-serif;
+}
+
+.form-control-custom {
+    background-color: #fcfcfc;
+    border: 1.5px solid #eee;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--auth-text-deep);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.form-control-custom:focus {
+    background-color: white;
+    border-color: var(--auth-primary);
+    box-shadow: 0 0 0 4px var(--auth-input-focus);
+    outline: none;
+}
+
+.form-control-custom::placeholder {
+    color: #b0b0b0;
+}
+
+/* Button Styling */
+.btn-auth {
+    background-color: var(--auth-primary);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(242, 140, 40, 0.15);
+}
+
+.btn-auth:hover {
+    background-color: var(--auth-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(242, 140, 40, 0.25);
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+/* Links & Footer */
+.auth-link {
+    color: var(--auth-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+    color: var(--auth-primary-hover);
+    text-decoration: underline;
+}
+
+.auth-footer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--auth-text-muted);
+    margin-top: 32px;
+}
+
+.form-check-input:checked {
+    background-color: var(--auth-primary);
+    border-color: var(--auth-primary);
+}
+
+/* Loading/Animations */
+.fade-in {
+    animation: premiumFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes premiumFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 32px 24px;
+        border-radius: 20px;
+    }
+
+    .auth-header h2 {
+        font-size: 26px;
+    }
+}
