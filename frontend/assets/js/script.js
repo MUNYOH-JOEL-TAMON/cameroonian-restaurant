@@ -34,6 +34,31 @@ $(document).ready(function () {
 
     $('.btn-icon-header, #closeCart, #cartOverlay').on('click', toggleCart);
 
+    // === Auth State Management ===
+    function checkLoginState() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            $('#auth-buttons').removeClass('d-lg-flex').addClass('d-none'); // Hide auth buttons
+            $('.mobile-signin').hide(); // Hide mobile auth links
+            
+            $('#user-profile').removeClass('d-none').addClass('d-flex'); // Show profile
+            $('#user-name').text(`Hi, ${user.full_name.split(' ')[0]}`); // Show first name
+        } else {
+            $('#auth-buttons').removeClass('d-none').addClass('d-lg-flex');
+            $('.mobile-signin').show();
+            $('#user-profile').removeClass('d-flex').addClass('d-none');
+        }
+    }
+
+    // Call on load
+    checkLoginState();
+
+    // Logout Handler
+    $('#btn-logout').on('click', function() {
+        localStorage.removeItem('user');
+        window.location.href = 'index.php';
+    });
+
     $btnCheckout.on('click', function () {
         if (cart.length > 0) {
             window.location.href = 'checkout.php';

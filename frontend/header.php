@@ -36,8 +36,23 @@
                     </svg>
                     <span class="cart-badge"></span>
                 </button>
-                <a href="signin.php" class="custom-nav-link d-none d-lg-block">Sign in</a>
-                <a href="signup.php" class="btn-signin text-decoration-none">Sign up</a>
+                <!-- Auth Buttons -->
+                <div id="auth-buttons" class="d-none d-lg-flex align-items-center gap-3">
+                    <a href="signin.php" class="custom-nav-link">Sign in</a>
+                    <a href="signup.php" class="btn-signin text-decoration-none">Sign up</a>
+                </div>
+
+                <!-- User Profile (Hidden by default) -->
+                <div id="user-profile" class="d-none align-items-center gap-3">
+                    <span class="fw-bold text-dark" id="user-name"></span>
+                    <button id="btn-logout" class="btn-icon-header" title="Logout">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="#F28C28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 17l5-5-5-5" stroke="#F28C28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12H9" stroke="#F28C28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
 
                 <!-- Hamburger Menu Button -->
                 <button class="hamburger-menu">
