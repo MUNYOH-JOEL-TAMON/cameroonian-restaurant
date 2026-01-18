@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "cameroonian-restaurant-api",
+		"name": "Cameroonian Restaurant API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"full_name\": \"Postman User\",\n    \"email\": \"postman@example.com\",\n    \"phone\": \"237612345678\",\n    \"password\": \"password123\",\n    \"address\": \"Douala, Cameroon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/api/register.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"api",
+						"register.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"if (jsonData.success) {",
+							"    pm.globals.set(\"user_id\", jsonData.data.user_id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"postman@example.com\",\n    \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/api/login.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"api",
+						"login.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Get All Meals",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/api/get_meals.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"api",
+						"get_meals.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Place Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\": [\n        {\n            \"meal_id\": 1,\n            \"quantity\": 2\n        },\n        {\n            \"meal_id\": 2,\n            \"quantity\": 1\n        }\n    ],\n    \"payment_method\": \"delivery\",\n    \"delivery_address\": \"Buea, Cameroon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/api/place_order.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"api",
+						"place_order.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Get Order Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/api/get_order.php?order_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"api",
+						"get_order.php"
+					],
+					"query": [
+						{
+							"key": "order_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Admin: Add Meal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"meal_name\": \"Kati Kati\",\n    \"description\": \"Grilled chicken with spices\",\n    \"price\": 3000,\n    \"category\": \"Main Course\",\n    \"image_url\": \"katikati.jpg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/Dr T AND Dr M/backend/admin/add_meal.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"Dr T AND Dr M",
+						"backend",
+						"admin",
+						"add_meal.php"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
