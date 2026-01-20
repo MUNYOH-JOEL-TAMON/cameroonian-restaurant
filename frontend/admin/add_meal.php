@@ -12,7 +12,7 @@
 
     <div class="container-custom py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+            <div class="col-lg-10"> <!-- Wider container -->
                 <div class="d-flex align-items-center mb-4">
                     <a href="index.php" class="text-decoration-none me-3" style="color: #F28C28;">&larr; Back</a>
                     <h2 class="m-0">Add New Meal</h2>
@@ -21,41 +21,67 @@
                 <div class="card border-0 shadow-lg rounded-4">
                     <div class="card-body p-4 p-md-5">
                         <form id="add-meal-form">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Meal Name</label>
-                                <input type="text" class="form-control" name="meal_name" required placeholder="e.g. Ndole">
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Price (FCFA)</label>
-                                    <input type="number" class="form-control" name="price" required placeholder="e.g. 2500">
+                            <div class="row g-5"> <!-- Grid with gap -->
+                                
+                                <!-- Left Column: Image Upload -->
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Meal Image</label>
+                                        <div class="image-upload-area p-4 text-center border rounded-3 bg-light" style="border-style: dashed !important; border-color: #dee2e6;">
+                                            <div class="mb-3">
+                                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-secondary">
+                                                    <path d="M12 16v-8m0 0l-3 3m3-3l3 3m6 13H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3l2-3h6l2 3h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </div>
+                                            <input type="file" class="form-control" name="image_file" accept="image/*" id="imageInput">
+                                            <div class="form-text mt-2">Supported: JPG, PNG, WEBP.</div>
+                                        </div>
+                                        <!-- Preview -->
+                                        <div class="mt-3 text-center" id="preview-container" style="display: none;">
+                                            <img id="image-preview" src="#" alt="Preview" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: cover;">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold">Category</label>
-                                    <select class="form-select" name="category" required>
-                                        <option value="">Select Category</option>
-                                        <option value="Main Course">Main Course</option>
-                                        <option value="Appetizer">Appetizer</option>
-                                        <option value="Dessert">Dessert</option>
-                                        <option value="Drinks">Drinks</option>
-                                        <option value="Side Dish">Side Dish</option>
-                                    </select>
+
+                                <!-- Right Column: Form Details -->
+                                <div class="col-md-8">
+                                    <h5 class="mb-4 text-muted">Meal Details</h5>
+                                    
+                                    <div class="row g-3"> <!-- Inner Grid -->
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold">Meal Name</label>
+                                            <input type="text" class="form-control form-control-lg" name="meal_name" required placeholder="e.g. Ndole with Plantains">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Price (FCFA)</label>
+                                            <input type="number" class="form-control" name="price" required placeholder="2500">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Category</label>
+                                            <select class="form-select" name="category" required>
+                                                <option value="">Select Category</option>
+                                                <option value="Main Course">Main Course</option>
+                                                <option value="Appetizer">Appetizer</option>
+                                                <option value="Dessert">Dessert</option>
+                                                <option value="Drinks">Drinks</option>
+                                                <option value="Side Dish">Side Dish</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold">Description</label>
+                                            <textarea class="form-control" name="description" rows="4" placeholder="Describe the flavors, ingredients, and portion size..."></textarea>
+                                        </div>
+                                        
+                                        <div class="col-12 mt-4">
+                                             <button type="submit" class="btn text-white fw-bold py-3 w-100" style="background-color: #F28C28;">Add Meal to Menu</button>
+                                        </div>
+                                    </div>
                                 </div>
+                            
                             </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Description</label>
-                                <textarea class="form-control" name="description" rows="3" placeholder="Brief description of the dish..."></textarea>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Meal Image</label>
-                                <input type="file" class="form-control" name="image_file" accept="image/*">
-                                <div class="form-text">Supported formats: JPG, PNG, WEBP. Max size: 5MB.</div>
-                            </div>
-
-                            <button type="submit" class="btn w-100 text-white fw-bold py-3" style="background-color: #F28C28;">Add Meal</button>
                         </form>
                     </div>
                 </div>
@@ -70,6 +96,21 @@
              if (!localStorage.getItem('user')) {
                 window.location.href = '../signin.php';
             }
+
+            // Image Preview
+            $('#imageInput').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image-preview').attr('src', e.target.result);
+                        $('#preview-container').fadeIn();
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    $('#preview-container').hide();
+                }
+            });
 
             $('#add-meal-form').on('submit', function(e) {
                 e.preventDefault();

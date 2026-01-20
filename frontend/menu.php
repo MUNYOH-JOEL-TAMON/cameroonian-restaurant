@@ -208,14 +208,7 @@
 
     <!-- Custom JS for interactivity -->
     <script>
-        // Category filter tabs
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', function () {
-                tabButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+
 
         // Smooth scroll behavior
         document.documentElement.style.scrollBehavior = 'smooth';
@@ -246,6 +239,9 @@
                             // Add meal_id data attribute for cart
                             clone.find('.menu-card').attr('data-id', meal.meal_id);
                             
+                            // Add category data attribute for filtering
+                            clone.attr('data-category', meal.category);
+                            
                             container.append(clone);
                         });
                         
@@ -261,6 +257,35 @@
                     $('#menu-loading').hide();
                     $('#dynamic-menu-row').html('<div class="col-12 text-center">Error connecting to server.</div>');
                 }
+            });
+        });
+
+        // Category Filter Logic
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active class from all
+                tabButtons.forEach(b => b.classList.remove('active'));
+                // Add to clicked
+                this.classList.add('active');
+                
+                const category = this.textContent.trim();
+                const items = document.querySelectorAll('#dynamic-menu-row > div');
+                
+                items.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    
+                    if (category === 'All Dishes' || itemCategory === category) {
+                        item.classList.remove('d-none');
+                        item.classList.add('d-block'); // Ensure it's visible (bootstrap display util might be needed if d-none was applied)
+                        // Or simple jQuery
+                        $(item).fadeIn();
+                    } else {
+                        item.classList.add('d-none');
+                        item.classList.remove('d-block');
+                        $(item).hide();
+                    }
+                });
             });
         });
     </script>
