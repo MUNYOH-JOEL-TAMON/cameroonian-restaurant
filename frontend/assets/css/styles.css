@@ -125,12 +125,21 @@ body {
     padding: 8px 20px;
     border-radius: 999px; /* Pill shape */
     transition: all 0.2s ease;
+    background-color: transparent; /* Default transparent */
 }
 
-.custom-nav-link:hover,
+/* Hover state matching tab-btn hover */
+.custom-nav-link:hover {
+    background-color: #E8DFD6 !important;
+    color: #1C1A17 !important;
+    transform: translateY(-1px);
+}
+
+/* Active state matching tab-btn active */
 .custom-nav-link.active {
     background-color: #F28C28 !important;
     color: white !important;
+    font-weight: 600;
 }
 
 
