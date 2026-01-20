@@ -58,8 +58,14 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-bold">Image Filename</label>
-                                <input type="text" class="form-control" name="image_url" id="image_url">
+                                <label class="form-label fw-bold">Meal Image</label>
+                                <div class="mb-2" id="current-image-container" style="display:none;">
+                                    <img src="" id="current-image-preview" alt="Current Image" style="max-height: 100px; border-radius: 8px;">
+                                    <p class="small text-muted mb-0">Current Image</p>
+                                </div>
+                                <input type="file" class="form-control" name="image_file" accept="image/*">
+                                <input type="hidden" name="image_url" id="image_url"> <!-- Store old filename -->
+                                <div class="form-text">Leave empty to keep current image.</div>
                             </div>
 
                             <button type="submit" class="btn w-100 text-white fw-bold py-3" style="background-color: #F28C28;">Update Meal</button>
@@ -88,7 +94,7 @@
                 return;
             }
 
-            // Fetch Meal details (by fetching all and finding one, since we don't have get_meal_by_id public yet)
+            // Fetch Meal details
             $.ajax({
                 url: '../../backend/api/get_meals.php',
                 method: 'GET',
@@ -103,6 +109,11 @@
                             $('#category').val(meal.category);
                             $('#description').val(meal.description);
                             $('#image_url').val(meal.image_url);
+                            
+                            if(meal.image_url) {
+                                $('#current-image-preview').attr('src', '../assets/images/' + meal.image_url);
+                                $('#current-image-container').show();
+                            }
                             
                             $('#loading-spinner').hide();
                             $('#edit-meal-form').fadeIn();
@@ -122,26 +133,30 @@
             $('#edit-meal-form').on('submit', function(e) {
                 e.preventDefault();
                 
-                const formData = {};
-                $(this).serializeArray().forEach(item => {
-                    formData[item.name] = item.value;
-                });
+                const formData = new FormData(this);
 
                 $.ajax({
                     url: '../../backend/admin/update_meal.php',
                     method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
-                        if (response.success) {
-                            alert('Meal updated successfully!');
-                            window.location.href = 'index.php';
-                        } else {
-                            alert(response.message || 'Failed to update meal.');
+                        try {
+                            const res = typeof response === 'object' ? response : JSON.parse(response);
+                            if (res.success) {
+                                alert('Meal updated successfully!');
+                                window.location.href = 'index.php';
+                            } else {
+                                alert(res.message || 'Failed to update meal.');
+                            }
+                        } catch(e) {
+                            console.error("Parsing error", e);
+                            alert("Unexpected response from server.");
                         }
                     },
-                    error: function() {
-                        alert('Error connecting to server.');
+                    error: function(xhr) {
+                        alert('Error connecting to server: ' + (xhr.responseJSON ? xhr.responseJSON.message : xhr.statusText));
                     }
                 });
             });
