@@ -29,12 +29,28 @@ if (!empty($data['meal_id'])) {
     
     // Check if meal exists first? Or just update.
     
+    // Handle Image Upload or Retain Existing
+    $image_filename = isset($data['image_url']) ? sanitizeInput($data['image_url']) : '';
+    
+    // Check if a new file is uploaded
+    if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
+        include_once '../utils/file_upload.php';
+        $uploadResult = uploadImage($_FILES['image_file']);
+        if ($uploadResult['success']) {
+            $image_filename = $uploadResult['filename'];
+        } else {
+            http_response_code(400);
+            echo json_encode(["success" => false, "message" => $uploadResult['message']]);
+            exit();
+        }
+    }
+
     $meal_data = [
         'meal_name' => sanitizeInput($data['meal_name']),
         'description' => isset($data['description']) ? sanitizeInput($data['description']) : '',
         'price' => $data['price'],
         'category' => sanitizeInput($data['category']),
-        'image_url' => isset($data['image_url']) ? sanitizeInput($data['image_url']) : ''
+        'image_url' => $image_filename
     ];
 
     if ($meal->updateMeal($meal_id, $meal_data)) {
