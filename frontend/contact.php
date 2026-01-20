@@ -125,18 +125,44 @@
             $('#contact-form').on('submit', function (e) {
                 e.preventDefault();
 
-                // Show success message
-                $('#contact-form').fadeOut(300, function () {
-                    $('#success-message').fadeIn(300);
-                });
+                // Get form data
+                const formData = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    subject: $('#subject').val(),
+                    message: $('#message').val()
+                };
 
-                // Reset form after 3 seconds
-                setTimeout(function () {
-                    $('#success-message').fadeOut(300, function () {
-                        $('#contact-form')[0].reset();
-                        $('#contact-form').fadeIn(300);
-                    });
-                }, 3000);
+                // Disable button
+                const $btn = $(this).find('button[type="submit"]');
+                const originalText = $btn.html();
+                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Sending...');
+
+                $.ajax({
+                    url: '../backend/api/contact.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        $('#contact-form').fadeOut(300, function () {
+                            $('#success-message').fadeIn(300);
+                        });
+
+                        // Reset form after 3 seconds
+                        setTimeout(function () {
+                            $('#success-message').fadeOut(300, function () {
+                                $('#contact-form')[0].reset();
+                                $('#contact-form').fadeIn(300);
+                                $btn.prop('disabled', false).html(originalText);
+                            });
+                        }, 5000);
+                    },
+                    error: function(xhr) {
+                        alert("Error sending message: " + (xhr.responseJSON ? xhr.responseJSON.message : "Please try again later."));
+                        $btn.prop('disabled', false).html(originalText);
+                    }
+                });
             });
         });
     </script>

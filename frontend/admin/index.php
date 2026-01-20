@@ -45,6 +45,12 @@
                 <span class="badge bg-secondary ms-2">Admin</span>
             </a>
             <div>
+                    <h2 class="m-0">Dashboard</h2>
+                </div>
+                <div>
+                <a href="messages.php" class="btn btn-outline-primary btn-sm me-2">
+                    <i class="fas fa-envelope"></i> Messages
+                </a>
                 <a href="../index.php" class="btn btn-outline-secondary btn-sm">View Site</a>
                 <button id="admin-logout" class="btn btn-outline-danger btn-sm ms-2">Logout</button>
             </div>
