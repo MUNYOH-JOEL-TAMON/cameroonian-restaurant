@@ -25,6 +25,20 @@ function loginUser($user) {
     $_SESSION['user_id'] = $user['user_id'];
     $_SESSION['email'] = $user['email'];
     $_SESSION['full_name'] = $user['full_name'];
+    $_SESSION['role'] = isset($user['role']) ? $user['role'] : 'user';
+}
+
+function isAdmin() {
+    startSession();
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+function requireAdmin() {
+    if (!isAdmin()) {
+        http_response_code(403);
+        echo json_encode(["success" => false, "message" => "Unauthorized. Admin access required."]);
+        exit();
+    }
 }
 
 function logoutUser() {

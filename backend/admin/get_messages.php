@@ -5,6 +5,19 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../classes/Database.php';
 include_once '../models/Message.php';
+include_once '../utils/session.php';
+
+if (!isLoggedIn()) {
+    http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Unauthorized."]);
+    exit();
+}
+
+if (!isAdmin()) {
+    http_response_code(403);
+    echo json_encode(["success" => false, "message" => "Forbidden. Admin access required."]);
+    exit();
+}
 
 $database = new Database();
 $db = $database->getConnection();

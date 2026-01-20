@@ -15,7 +15,11 @@ if (!isLoggedIn()) {
     exit();
 }
 
-// TODO: Add Role Check here
+if (!isAdmin()) {
+    http_response_code(403);
+    echo json_encode(["success" => false, "message" => "Forbidden. Admin access required."]);
+    exit();
+}
 
 $database = new Database();
 $db = $database->getConnection();

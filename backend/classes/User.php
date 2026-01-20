@@ -36,7 +36,7 @@ class User {
     }
 
     public function login($email, $password) {
-        $query = "SELECT user_id, full_name, email, password, phone, address FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+        $query = "SELECT user_id, full_name, email, password, phone, address, role FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $email);
         $stmt->execute();
@@ -53,7 +53,7 @@ class User {
     }
 
     public function getUserById($user_id) {
-        $query = "SELECT user_id, full_name, email, phone, address, created_at FROM " . $this->table_name . " WHERE user_id = :user_id LIMIT 1";
+        $query = "SELECT user_id, full_name, email, phone, address, role, created_at FROM " . $this->table_name . " WHERE user_id = :user_id LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":user_id", $user_id);
         $stmt->execute();

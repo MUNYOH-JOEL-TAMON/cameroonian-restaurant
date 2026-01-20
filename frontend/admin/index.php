@@ -1,3 +1,10 @@
+<?php
+include_once '../../backend/utils/session.php';
+if (!isLoggedIn() || !isAdmin()) {
+    header("Location: ../signin.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
