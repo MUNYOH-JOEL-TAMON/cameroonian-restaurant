@@ -12,6 +12,10 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     background-color: #FAF7F3;
     color: #1C1A17;
@@ -19,6 +23,20 @@ body {
     font-size: 16px;
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+main, .contact-wrapper, .hero-section {
+    flex: 1 0 auto;
+    width: 100%; /* Ensure full width */
+}
+
+/* Specific fix for contact page wrapper if it's the main content */
+.contact-wrapper {
+    flex-grow: 1;
 }
 
 /* Container */
@@ -593,7 +611,7 @@ h6 {
     background-color: #FAF7F3;
     color: #1C1A17; /* Revert text color */
     padding: 60px 0 40px;
-    margin-top: 80px;
+    margin-top: auto; /* Push footer to bottom */
 }
 
 .footer-divider {
