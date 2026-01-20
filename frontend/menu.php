@@ -277,8 +277,7 @@
                     
                     if (category === 'All Dishes' || itemCategory === category) {
                         item.classList.remove('d-none');
-                        item.classList.add('d-block'); // Ensure it's visible (bootstrap display util might be needed if d-none was applied)
-                        // Or simple jQuery
+                        item.classList.add('d-block'); 
                         $(item).fadeIn();
                     } else {
                         item.classList.add('d-none');
@@ -287,6 +286,34 @@
                     }
                 });
             });
+        });
+
+        // Price Sorting Logic
+        const sortBtn = document.querySelector('.sort-btn');
+        let sortAsc = true;
+
+        sortBtn.addEventListener('click', function() {
+            const container = document.getElementById('dynamic-menu-row');
+            // Get all menu item columns
+            const items = Array.from(container.children);
+            
+            // Sort items
+            items.sort((a, b) => {
+                const priceA = parseFloat(a.querySelector('.menu-price').textContent.replace(/[^\d]/g, ''));
+                const priceB = parseFloat(b.querySelector('.menu-price').textContent.replace(/[^\d]/g, ''));
+                
+                return sortAsc ? priceA - priceB : priceB - priceA;
+            });
+            
+            // Toggle direction for next click
+            sortAsc = !sortAsc;
+            
+            // Update button text/icon optionally
+            // const iconPath = sortAsc ? "M3 5H13 M5 8H11 M7 11H9" : "M3 11H13 M5 8H11 M7 5H9"; 
+            // This assumes simple reordering is enough for "Sort by Price" toggling
+            
+            // Re-append items in new order
+            items.forEach(item => container.appendChild(item));
         });
     </script>
 </body>
