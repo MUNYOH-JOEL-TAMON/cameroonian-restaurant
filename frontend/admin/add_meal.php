@@ -50,9 +50,9 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-bold">Image Filename</label>
-                                <input type="text" class="form-control" name="image_url" placeholder="e.g. ndole.jpg (must exist in assets/images/)">
-                                <div class="form-text">Currently, please manually upload images to <code>frontend/assets/images/</code> and enter filename here.</div>
+                                <label class="form-label fw-bold">Meal Image</label>
+                                <input type="file" class="form-control" name="image_file" accept="image/*">
+                                <div class="form-text">Supported formats: JPG, PNG, WEBP. Max size: 5MB.</div>
                             </div>
 
                             <button type="submit" class="btn w-100 text-white fw-bold py-3" style="background-color: #F28C28;">Add Meal</button>
@@ -74,27 +74,32 @@
             $('#add-meal-form').on('submit', function(e) {
                 e.preventDefault();
                 
-                // Convert form data to JSON object
-                const formData = {};
-                $(this).serializeArray().forEach(item => {
-                    formData[item.name] = item.value;
-                });
+                // Use FormData for file upload
+                const formData = new FormData(this);
 
                 $.ajax({
                     url: '../../backend/admin/add_meal.php',
                     method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
+                    data: formData,
+                    processData: false, // Important for FormData
+                    contentType: false, // Important for FormData
                     success: function(response) {
-                        if (response.success) {
-                            alert('Meal added successfully!');
-                            window.location.href = 'index.php';
-                        } else {
-                            alert(response.message || 'Failed to add meal.');
+                        try {
+                            // If response is already JSON, use it, otherwise parse
+                            const res = typeof response === 'object' ? response : JSON.parse(response);
+                            if (res.success) {
+                                alert('Meal added successfully!');
+                                window.location.href = 'index.php';
+                            } else {
+                                alert(res.message || 'Failed to add meal.');
+                            }
+                        } catch(e) {
+                             console.error("Parsing error", e);
+                             alert("Unexpected response from server.");
                         }
                     },
-                    error: function() {
-                        alert('Error connecting to server.');
+                    error: function(xhr) {
+                        alert('Error connecting to server: ' + (xhr.responseJSON ? xhr.responseJSON.message : xhr.statusText));
                     }
                 });
             });

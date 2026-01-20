@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Dr T & Dr M</title>
+    <title>Admin Dashboard - Food Bistro</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -41,7 +41,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-custom w-100 d-flex justify-content-between align-items-center">
             <a class="navbar-brand d-flex align-items-center gap-2" href="../index.php">
-                <span class="fw-bold" style="font-family: 'Lora', serif;">Dr T & <span style="color: #F28C28;">Dr M</span></span>
+                <span class="fw-bold" style="font-family: 'Lora', serif;">Food <span style="color: #F28C28;">Bistro</span></span>
                 <span class="badge bg-secondary ms-2">Admin</span>
             </a>
             <div>
