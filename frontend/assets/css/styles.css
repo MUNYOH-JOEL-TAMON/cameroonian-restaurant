@@ -121,15 +121,16 @@ body {
     text-decoration: none !important;
     color: #1C1A17;
     font-weight: 500;
-    font-size: 16px;
-    position: relative;
-    padding-bottom: 4px;
-    transition: color 0.2s;
+    font-size: 15px;
+    padding: 8px 20px;
+    border-radius: 999px; /* Pill shape */
+    transition: all 0.2s ease;
 }
 
 .custom-nav-link:hover,
 .custom-nav-link.active {
-    color: #1C1A17;
+    background-color: #F28C28 !important;
+    color: white !important;
 }
 
 

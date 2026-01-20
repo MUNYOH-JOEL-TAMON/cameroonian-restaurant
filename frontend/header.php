@@ -16,10 +16,13 @@
 
             <!-- Navigation Links -->
             <ul class="custom-navbar-nav">
-                <li><a href="index.php" class="custom-nav-link">Home</a></li>
-                <li><a href="menu.php" class="custom-nav-link active">Menu</a></li>
+                <?php
+                $currentPage = basename($_SERVER['SCRIPT_NAME']);
+                ?>
+                <li><a href="index.php" class="custom-nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>">Home</a></li>
+                <li><a href="menu.php" class="custom-nav-link <?php echo $currentPage == 'menu.php' ? 'active' : ''; ?>">Menu</a></li>
                 <li><a href="#" class="custom-nav-link">Specials</a></li>
-                <li><a href="contact.php" class="custom-nav-link">Contact</a></li>
+                <li><a href="contact.php" class="custom-nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
                 <li class="mobile-signin"><a href="signin.php" class="custom-nav-link">Sign in</a></li>
                 <li class="mobile-signin"><a href="signup.php" class="btn-signin">Sign up</a></li>
             </ul>
