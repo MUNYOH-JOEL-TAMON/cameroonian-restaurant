@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/styles.css">
     <style>
@@ -57,30 +59,22 @@
         </div>
     </nav>
 
-    <div class="container-custom py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Manage Meals</h1>
-            <a href="add_meal.php" class="btn btn-primary" style="background-color: #F28C28; border: none;">+ Add New Meal</a>
+    <div class="container-fluid px-4 px-lg-5 py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-1">Manage Meals</h2>
+                <p class="text-muted m-0">Overview of all dishes in the menu</p>
+            </div>
+            <a href="add_meal.php" class="btn text-white fw-bold px-4 py-2 shadow-sm" style="background-color: #F28C28; border: none; border-radius: 8px;">
+                <span class="fs-5 align-middle me-1">+</span> Add New Meal
+            </a>
         </div>
 
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table admin-table mb-0 table-hover">
-                        <thead>
-                            <tr>
-                                <th class="p-3">Image</th>
-                                <th class="p-3">Name</th>
-                                <th class="p-3">Category</th>
-                                <th class="p-3">Price</th>
-                                <th class="p-3 text-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="meals-table-body">
-                            <!-- Dynamic Content -->
-                            <tr><td colspan="5" class="text-center p-4">Loading meals...</td></tr>
-                        </tbody>
-                    </table>
+        <div id="meals-grid" class="row g-4">
+            <!-- Dynamic Cards -->
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
         </div>
@@ -113,36 +107,51 @@
                 method: 'GET',
                 success: function(response) {
                     if (response.success) {
-                        const tbody = $('#meals-table-body');
-                        tbody.empty();
+                        const container = $('#meals-grid');
+                        container.empty();
                         
-                        // Sort by newest first (assuming higher ID is newer)
+                        // Sort by newest first
                         const meals = response.data.sort((a, b) => b.meal_id - a.meal_id);
                         
                         meals.forEach(meal => {
                             let imgUrl = meal.image_url ? '../assets/images/' + meal.image_url : '../assets/images/image2.jpg';
                             
-                            tbody.append(`
-                                <tr>
-                                    <td class="p-3">
-                                        <img src="${imgUrl}" alt="${meal.meal_name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
-                                    </td>
-                                    <td class="p-3 fw-bold align-middle">${meal.meal_name}</td>
-                                    <td class="p-3 align-middle"><span class="badge bg-light text-dark border">${meal.category}</span></td>
-                                    <td class="p-3 align-middle">${parseFloat(meal.price).toLocaleString()} FCFA</td>
-                                    <td class="p-3 text-end align-middle">
-                                        <a href="edit_meal.php?id=${meal.meal_id}" class="action-btn btn-edit me-1">Edit</a>
-                                        <button class="btn btn-sm btn-delete text-white" onclick="deleteMeal(${meal.meal_id})">Delete</button>
-                                    </td>
-                                </tr>
+                            container.append(`
+                                <div class="col-md-6 col-lg-4 col-xl-3">
+                                    <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                                        <div class="card-body p-0 d-flex">
+                                            <div class="flex-shrink-0">
+                                                <img src="${imgUrl}" alt="${meal.meal_name}" style="width: 90px; height: 100%; min-height: 90px; object-fit: cover;">
+                                            </div>
+                                            <div class="p-2 flex-grow-1 d-flex flex-column justify-content-between">
+                                                <div>
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <h6 class="fw-bold mb-1 text-dark text-truncate small" style="max-width: 100px;" title="${meal.meal_name}">${meal.meal_name}</h6>
+                                                        <span class="text-primary fw-bold small" style="font-size: 0.8rem;">${parseFloat(meal.price).toLocaleString()}</span>
+                                                    </div>
+                                                    <span class="badge bg-light text-secondary border fw-normal" style="font-size: 0.7rem; padding: 2px 6px;">${meal.category}</span>
+                                                </div>
+                                                
+                                                <div class="d-flex justify-content-end gap-1 mt-2">
+                                                    <a href="edit_meal.php?id=${meal.meal_id}" class="btn btn-outline-primary p-0 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 10px;" title="Edit">
+                                                        <i class="fas fa-pen"></i>
+                                                    </a>
+                                                    <button class="btn btn-outline-danger p-0 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 10px;" onclick="deleteMeal(${meal.meal_id})" title="Delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             `);
                         });
                     } else {
-                        $('#meals-table-body').html('<tr><td colspan="5" class="text-center text-danger p-4">Failed to load data.</td></tr>');
+                        $('#meals-grid').html('<div class="col-12 text-center text-danger p-4">Failed to load data.</div>');
                     }
                 },
                 error: function() {
-                    $('#meals-table-body').html('<tr><td colspan="5" class="text-center text-danger p-4">Error connecting to server.</td></tr>');
+                    $('#meals-grid').html('<div class="col-12 text-center text-danger p-4">Error connecting to server.</div>');
                 }
             });
         }
